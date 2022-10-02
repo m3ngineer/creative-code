@@ -1,0 +1,80 @@
+<html>
+  <body>
+    <canvas width="600" height="600"></canvas>
+
+    <script>
+      let canvas = document.querySelector('canvas');
+      let context = canvas.getContext('2d');
+
+      /// set coordinates in 2D space
+      /// x, y, width, height
+      context.fillStyle = 'blue'
+      // context.fillRect(100, 100, 400, 400);
+
+      // Fill rectangle
+      context.lineWidth = 4;
+      context.beginPath();
+      context.rect(100, 100, 400, 400);
+      // context.stroke();
+
+      // Circle
+      // x, y, r, sAngle, rAngle
+      context.beginPath()
+      context.arc(300, 300, 100, 0, Math.PI * 2);
+      // context.stroke()
+
+      const width = 60;
+      const height = 60;
+      const gap = 20;
+      let x, y;
+
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+          x = 100 + (width + gap) * i;
+          y = 100 + (width + gap) * j;
+
+          context.beginPath();
+          context.rect(x, y, width, height);
+          context.stroke();
+
+          if (Math.random() > 0.5) {
+            context.beginPath();
+            context.rect(x + 8, y + 8, width - 16, height - 16)
+            context.stroke();
+          }
+
+        }
+      }
+
+      let year = 2042;
+      let nextYear = year + 1;
+
+      let dinner = 'pasta';
+      let sentence = 'Tonight, dinner will be ' + dinner;
+
+      function saySomething(param) {
+        console.log(param);
+      }
+
+      function add(a, b) {
+        return a + b;
+      }
+
+      let multiply = (a, b) => {
+        return a * b;
+      }
+
+      let years = [2040, 2041, 2042];
+      let menu = ['starter', 'main', 'dessert', 'drinks', 'sides'];
+      for (let i = 0; i < menu.length; i++) {
+        console.log(menu[i]);
+      }
+
+      for (let i = 0; i <= menu.length; i++) {
+        years.push(2040 + 1);
+      }
+
+    </script>
+
+  </body>
+</html>
