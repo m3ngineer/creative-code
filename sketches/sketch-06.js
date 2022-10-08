@@ -1,4 +1,5 @@
 const canvasSketch = require('canvas-sketch');
+const random = require('canvas-sketch-util/random');
 
 const settings = {
   dimensions: [ 1080, 1080 ]
@@ -26,7 +27,7 @@ const sketch = ({ context, width, height }) => {
     typeContext.fillStyle = 'black';
     typeContext.fillRect(0, 0, cols, rows);
 
-    fontSize = cols;
+    fontSize = cols * 1.2;
 
     typeContext.fillStyle = 'white';
     typeContext.font = `${fontSize}px ${fontFamily}`;
@@ -53,37 +54,100 @@ const sketch = ({ context, width, height }) => {
     typeContext.restore();
 
     const typeData = typeContext.getImageData(0, 0, cols, rows).data;
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, width, height);
 
-    typeContext.drawImage(typeCanvas, 0, 0);
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+
+    // context.drawImage(typeCanvas, 0, 0);
 
     for (let i = 0; i < numCells; i++) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
+			const col = i % cols;
+			const row = Math.floor(i / cols);
 
-      const x = col * cell;
-      const y = row * cell;
+			const x = col * cell;
+			const y = row * cell;
 
-      // Read pixel channels
-      const r = typeData[i * 4 + 0];
-      const g = typeData[i * 4 + 1];
-      const b = typeData[i * 4 + 2];
-      const a = typeData[i * 4 + 3];
+			const r = typeData[i * 4 + 0];
+			const g = typeData[i * 4 + 1];
+			const b = typeData[i * 4 + 2];
+			const a = typeData[i * 4 + 3];
 
-      context.fillStyle = `rgb(${r}, ${g}, ${b})`
+			const glyph = getGlyph(r);
 
-      // Draw col x col squares across grid
-      context.save()
-      context.translate(x, y);
-      context.translate(cell * 0.5, cell * 0.5);
-      // context.fillRect(0, 0, cell, cell);
+			context.font = `${cell * 2}px ${fontFamily}`;
+			if (Math.random() < 0.1) context.font = `${cell * 6}px ${fontFamily}`;
 
-      context.beginPath();
-      context.arc(0, 0, cell * 0.5, 0, Math.PI * 2);
-      context.fill();
-      context.restore()
+			context.fillStyle = 'white';
 
-    }
-  };
+			context.save();
+			context.translate(x, y);
+			context.translate(cell * 0.5, cell * 0.5);
+
+			// context.fillRect(0, 0, cell, cell);
+
+			context.fillText(glyph, 0, 0);
+
+			context.restore();
+
+		}
+	};
 };
 
-canvasSketch(sketch, settings);
+const getGlyph = (v) => {
+  if (v < 50) return '';
+  if (v < 100) return '.';
+  if (v < 150) return '-';
+  if (v < 200) return '+';
+
+  const glyphs = '_=+./'.split('');
+  return random.pick(glyphs)
+}
+
+// canvasSketch(sketch, settings);
+
+const onKeyUp = (e) => {
+	text = e.key.toUpperCase();
+	manager.render();
+};
+
+document.addEventListener('keyup', onKeyUp);
+
+
+const start = async () => {
+	manager = await canvasSketch(sketch, settings);
+};
+
+start();
+
+
+// image
+
+// const url = 'https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/e4676446711693.5607e0da9d760.jpg';
+//
+//
+// const loadMeSomeImage = (url) => {
+// 	return new Promise((resolve, reject) => {
+// 		const img = new Image();
+// 		img.onload = () => resolve(img);
+// 		img.onerror = () => reject();
+// 		img.src = url;
+// 	});
+// };
+
+// const start = async () => {
+// 	const img = await loadMeSomeImage(url);
+// 	console.log('image width', img.width);
+// 	console.log('this line');
+// };
+
+// const start = () => {
+// 	loadMeSomeImage(url).then(img => {
+// 		console.log('image width', img.width);
+// 	});
+// 	console.log('this line');
+// };
+//
+//
+// start();
