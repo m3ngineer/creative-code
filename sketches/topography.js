@@ -1,7 +1,15 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const math = require('canvas-sketch-util/math');
-const Tweakpane = require('tweakpane');
+
+// function draw() {
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+
+var width = 1080;
+var height = 1080;
+var frame = 0;
+console.log('ok')
 
 const params = {
   cols: 125,
@@ -23,6 +31,7 @@ const settings = {
 
 const sketch = () => {
   return ({ context, width, height, frame }) => {
+
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
 
@@ -73,28 +82,36 @@ const sketch = () => {
       context.restore();
 
     }
+
+    // window.requestAnimationFrame(draw);
+
+// }
+//
+// window.requestAnimationFrame(draw);
+
+
   };
 };
 
-const createPane = () => {
-  const pane = new Tweakpane.Pane();
-
-  let folder;
-
-  folder = pane.addFolder({ title: 'Lines' })
-  folder.addInput(params, 'cols', { min: 2, max: 200, step: 1 })
-  folder.addInput(params, 'rows', { min: 2, max: 200, step: 1 })
-  folder.addInput(params, 'scaleMin', { min: 1, max: 20, step: 1 })
-  folder.addInput(params, 'scaleMax', { min: 1, max: 20, step: 1 })
-  folder.addInput(params, 'invert', { min: 0, max: 999, step: 1 })
-
-  folder = pane.addFolder({ title: 'Noise' })
-  folder.addInput(params, 'freq', { min: 0, max: 0.01 })
-  folder.addInput(params, 'amp', { min: 1, max: 100, step: 1 })
-  folder.addInput(params, 'speed', { min: 1, max: 10, step: 1 })
-  folder.addInput(params, 'animate')
-  folder.addInput(params, 'frame', { min: 0, max: 999, step: 1 })
-  }
-
-createPane();
+// const createPane = () => {
+//   const pane = new Tweakpane.Pane();
+//
+//   let folder;
+//
+//   folder = pane.addFolder({ title: 'Lines' })
+//   folder.addInput(params, 'cols', { min: 2, max: 200, step: 1 })
+//   folder.addInput(params, 'rows', { min: 2, max: 200, step: 1 })
+//   folder.addInput(params, 'scaleMin', { min: 1, max: 20, step: 1 })
+//   folder.addInput(params, 'scaleMax', { min: 1, max: 20, step: 1 })
+//   folder.addInput(params, 'invert', { min: 0, max: 999, step: 1 })
+//
+//   folder = pane.addFolder({ title: 'Noise' })
+//   folder.addInput(params, 'freq', { min: 0, max: 0.01 })
+//   folder.addInput(params, 'amp', { min: 1, max: 100, step: 1 })
+//   folder.addInput(params, 'speed', { min: 1, max: 10, step: 1 })
+//   folder.addInput(params, 'animate')
+//   folder.addInput(params, 'frame', { min: 0, max: 999, step: 1 })
+//   }
+//
+// createPane();
 canvasSketch(sketch, settings);
